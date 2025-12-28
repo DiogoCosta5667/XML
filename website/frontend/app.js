@@ -6,6 +6,7 @@ let reservasCache = [];
 let hospedesCache = [];
 
 
+
 document.addEventListener('DOMContentLoaded', () => {
     initMainNav();
     initTabs();
@@ -14,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     carregarDadosSelects();
     setupUrlUpdaters();
     setupFormCriar();
-});
+});    
 
 
 const swalConfig = {
