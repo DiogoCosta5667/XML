@@ -5,6 +5,7 @@ const API_URL = window.location.hostname === 'localhost' || window.location.host
 let reservasCache = [];
 let hospedesCache = [];
 
+
 document.addEventListener('DOMContentLoaded', () => {
     initMainNav();
     initTabs();
