@@ -861,7 +861,32 @@ async function executarQuery(tipo) {
                             });
                             carregarDadosSelects();
                             carregarEstatisticas();
-                            resultDiv.innerHTML = `<div class="success-msg"><i class="fas fa-trash"></i> Reserva apagada</div>`;
+
+                            const reserva = data.dados;
+                            const servicosList = reserva.servicosAdicionais && reserva.servicosAdicionais.length > 0
+                                ? reserva.servicosAdicionais.map(s => `<span style="background:rgba(168,85,247,0.2); padding:2px 8px; border-radius:4px; font-size:0.8rem;">${s.quantidade}x ${s.tipo}</span>`).join(' ')
+                                : '<span style="color:#666; font-style:italic;">Sem serviços</span>';
+
+                            resultDiv.innerHTML = `
+                                <div style="background: var(--bg-card); border: 1px solid #dc2626; border-radius: 16px; padding: 20px; text-align: left; animation: fadeIn 0.5s;">
+                                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:1px solid var(--border); padding-bottom:10px;">
+                                        <h3 style="margin:0; color:white; font-size:1.2rem;"><i class="fas fa-trash" style="color:#dc2626;"></i> Reserva Eliminada</h3>
+                                        <span style="background:rgba(220,38,38,0.2); border: 1px solid #dc2626; padding:4px 10px; border-radius:12px; font-size:0.8rem; font-weight:bold; color:#dc2626;">${reserva.numeroReserva}</span>
+                                    </div>
+                                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; font-size:0.9rem; color:var(--text-secondary);">
+                                        <div><strong style="color:white;">Hóspede:</strong><br>${reserva.hospede.nome}</div>
+                                        <div><strong style="color:white;">Unidade:</strong><br>${reserva.unidade} - Quarto ${reserva.quarto}</div>
+                                        <div><strong style="color:white;">Check-in:</strong><br>${reserva.checkIn}</div>
+                                        <div><strong style="color:white;">Check-out:</strong><br>${reserva.checkOut}</div>
+                                        <div><strong style="color:white;">Valor Total:</strong><br><span style="color:#dc2626; font-weight:bold; font-size:1.1rem;">€${reserva.valorTotal}</span></div>
+                                        <div><strong style="color:white;">Cliente:</strong><br>${reserva.hospede.numeroCliente}</div>
+                                    </div>
+                                    <div style="margin-top:15px; padding-top:10px; border-top:1px dashed var(--border);">
+                                        <strong style="color:white; font-size:0.85rem;">Serviços Extra:</strong>
+                                        <div style="margin-top:5px; display:flex; flex-wrap:wrap; gap:5px;">${servicosList}</div>
+                                    </div>
+                                </div>
+                            `;
                         } else {
                             Swal.fire({
                                 ...swalConfig,

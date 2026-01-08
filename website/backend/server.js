@@ -433,13 +433,20 @@ app.put('/api/reservas/:numeroReserva', async (req, res) => {
 app.delete('/api/reservas/:numeroReserva', async (req, res) => {
     try {
         const { numeroReserva } = req.params;
-        const resultado = await db.collection('reservas').deleteOne({ numeroReserva: numeroReserva });
 
-        if (resultado.deletedCount === 0) {
+        const reserva = await db.collection('reservas').findOne({ numeroReserva: numeroReserva });
+
+        if (!reserva) {
             return res.status(404).json({ sucesso: false, erro: 'Reserva não encontrada para remover.' });
         }
 
-        res.json({ sucesso: true, mensagem: `Reserva ${numeroReserva} removida com sucesso.` });
+        const resultado = await db.collection('reservas').deleteOne({ numeroReserva: numeroReserva });
+
+        res.json({
+            sucesso: true,
+            mensagem: `Reserva ${numeroReserva} removida com sucesso.`,
+            dados: reserva
+        });
     } catch (error) {
         res.status(500).json({ sucesso: false, erro: error.message });
     }
